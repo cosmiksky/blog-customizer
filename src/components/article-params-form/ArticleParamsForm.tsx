@@ -4,7 +4,16 @@ import { Button } from 'components/button';
 import styles from './ArticleParamsForm.module.scss';
 
 import { MouseEvent, useState, useRef, FormEvent } from 'react';
-import { ArticleStateType, OptionType, backgroundColors, contentWidthArr, defaultArticleState, fontColors, fontFamilyOptions, fontSizeOptions } from 'src/constants/articleProps';
+import {
+	ArticleStateType,
+	OptionType,
+	backgroundColors,
+	contentWidthArr,
+	defaultArticleState,
+	fontColors,
+	fontFamilyOptions,
+	fontSizeOptions,
+} from 'src/constants/articleProps';
 import { Text } from '../text';
 import { Select } from '../select';
 import { RadioGroup } from '../radio-group';
@@ -13,44 +22,61 @@ import { useOutsideClickClose } from '../select/hooks/useOutsideClickClose';
 import clsx from 'clsx';
 
 type articleParamsFormProps = {
-	setStatusPage: (state: ArticleStateType) => void
-}
+	setStatusPage: (state: ArticleStateType) => void;
+};
 
-export const ArticleParamsForm = ({setStatusPage}: articleParamsFormProps) => {
-
+export const ArticleParamsForm = ({
+	setStatusPage,
+}: articleParamsFormProps) => {
 	const [isOpen, setIsOpen] = useState(false);
 	const rootRef = useRef(null);
 	const [edition, setEdition] = useState(defaultArticleState);
 
-	const handleArrowClick = (e: MouseEvent) => {
-		e.stopPropagation();
-		setIsOpen(!isOpen)
-	}
+	const handleArrowClick = (evt: MouseEvent) => {
+		evt.stopPropagation();
+		setIsOpen(!isOpen);
+	};
 
 	const onSubmit = (evt: FormEvent) => {
 		evt.preventDefault();
+		setStatusPage(edition)
 	};
 
 	const handleResetPage = () => {
+		setEdition(defaultArticleState)
 		setStatusPage(defaultArticleState);
-	}
+	};
 
-	const updateArticleState = (key: keyof ArticleStateType, option: OptionType) => {
+	const updateArticleState = (
+		key: keyof ArticleStateType,
+		option: OptionType
+	) => {
 		setEdition((prev) => ({
 			...prev,
-			[key]: option
-		}))
-	}
+			[key]: option,
+		}));
+	};
 
-	useOutsideClickClose({isOpen, onClose: () => setIsOpen(false), rootRef, onChange: () => setIsOpen(false)})
+	useOutsideClickClose({
+		isOpen,
+		onClose: () => setIsOpen(false),
+		rootRef,
+		onChange: () => setIsOpen(false),
+	});
 
 	return (
 		<>
 			<ArrowButton onClick={handleArrowClick} isOpen={isOpen} />
-			<aside ref={rootRef} className={clsx(styles.container, {[styles.container_open]: isOpen})}>
-				<form className={styles.form} onSubmit={onSubmit} onReset={handleResetPage}>
-
-					<Text weight={800} size={31} align='left' uppercase={true}>Задайте параметры</Text>
+			<aside
+				ref={rootRef}
+				className={clsx(styles.container, { [styles.container_open]: isOpen })}>
+				<form
+					className={styles.form}
+					onSubmit={onSubmit}
+					onReset={handleResetPage}>
+					<Text weight={800} size={31} align='left' uppercase={true}>
+						Задайте параметры
+					</Text>
 					<Select
 						title='Шрифт'
 						options={fontFamilyOptions}
@@ -89,8 +115,16 @@ export const ArticleParamsForm = ({setStatusPage}: articleParamsFormProps) => {
 					/>
 
 					<div className={styles.bottomContainer}>
-						<Button title='Сбросить' type='reset' onClick={() => setEdition(defaultArticleState)} />
-						<Button title='Применить' type='submit' onClick={() => setStatusPage(edition)} />
+						<Button
+							title='Сбросить'
+							type='reset'
+							onClick={() => handleResetPage}
+						/>
+						<Button
+							title='Применить'
+							type='submit'
+							onClick={() => onSubmit}
+						/>
 					</div>
 				</form>
 			</aside>

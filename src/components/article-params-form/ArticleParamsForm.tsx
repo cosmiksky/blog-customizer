@@ -118,12 +118,12 @@ export const ArticleParamsForm = ({
 						<Button
 							title='Сбросить'
 							type='reset'
-							onClick={() => handleResetPage}
+						//	onClick={() => handleResetPage}
 						/>
 						<Button
 							title='Применить'
 							type='submit'
-							onClick={() => onSubmit}
+						//	onClick={() => onSubmit}
 						/>
 					</div>
 				</form>
